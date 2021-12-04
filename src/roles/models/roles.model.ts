@@ -8,6 +8,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../users/models/users.model';
 import { UserRoles } from './user-roles.model';
+import { RolesModel } from '../../constants/roles';
 
 interface RoleCreationAttributes {
   value: string;
@@ -25,7 +26,10 @@ export class Role extends Model<Role, RoleCreationAttributes> {
   })
   id: number;
 
-  @ApiProperty({ example: 'ADMIN', description: 'Unique value user role' })
+  @ApiProperty({
+    example: RolesModel.ADMIN,
+    description: 'Unique value user role',
+  })
   @Column({
     type: DataType.STRING,
     unique: true,
