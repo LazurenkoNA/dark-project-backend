@@ -7,15 +7,18 @@ import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/models/roles.model';
 import { UserRoles } from './roles/models/user-roles.model';
 import { AuthModule } from './auth/auth.module';
+import { PostsModule } from './posts/posts.module';
+import { Post } from './posts/models/posts.model';
+import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 console.log({
-  POSTGRES_USER: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,
   port: +process.env.POSTGRES_PORT,
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  envPath: `.${process.env.NODE_ENV}.env`,
 });
 
 @Module({
@@ -23,25 +26,24 @@ console.log({
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
-    UsersModule,
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, 'static'),
+    }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      // TODO: use this when be docker compose
-      // host: process.env.POSTGRES_HOST,
-      // port: +process.env.POSTGRES_PORT,
-      // username: process.env.POSTGRES_USER,
-      // password: process.env.POSTGRES_PASSWORD,
-      // database: process.env.POSTGRES_DB,
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'root',
-      database: 'dark-project',
-      models: [User, Role, UserRoles],
+      host: process.env.POSTGRES_HOST,
+      port: +process.env.POSTGRES_PORT,
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
+      models: [User, Role, UserRoles, Post],
       autoLoadModels: true,
     }),
+    UsersModule,
     RolesModule,
     AuthModule,
+    PostsModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],
