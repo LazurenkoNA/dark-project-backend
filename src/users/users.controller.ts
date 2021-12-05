@@ -31,7 +31,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Issue a role' })
-  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 200, type: User })
   @Roles(RolesModel.ADMIN)
   @UseGuards(RolesGuard)
   @Post('/role')
@@ -40,7 +40,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Ban user' })
-  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 200, type: User })
   @Roles(RolesModel.ADMIN)
   @UseGuards(RolesGuard)
   @Post('/ban')
