@@ -10,7 +10,10 @@ export class ValidationPipe implements PipeTransform<any> {
 
     console.log(obj);
 
-    const errors = await validate(obj);
+    const errors = await validate(obj, {
+      enableDebugMessages: true,
+      skipMissingProperties: true,
+    });
 
     if (errors.length) {
       const messages = errors.map((err) => {
